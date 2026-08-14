@@ -41,31 +41,29 @@
             height: 100vh;
             background-color: #f3efe6;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             transition: opacity 1s ease, visibility 1s;
+            padding: 20px;
         }
 
-        .envelope-card {
-            background: #ffffff;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 2px solid var(--primary);
-            max-width: 90%;
-            width: 400px;
+        .envelope-container {
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
         }
 
-        .envelope-card h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.8rem;
-            color: var(--primary);
-            margin-bottom: 10px;
+        .envelope-img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.15));
         }
 
         .open-btn {
-            margin-top: 25px;
             padding: 12px 35px;
             background-color: var(--primary);
             color: #fff;
@@ -155,9 +153,9 @@
         /* KAZI-KAZAN KALP GERİ SAYIM */
         .scratch-container {
             position: relative;
-            width: 280px;
-            height: 250px;
-            margin: 30px auto;
+            width: 300px;
+            height: 260px;
+            margin: 20px auto;
         }
 
         .countdown-box {
@@ -172,19 +170,22 @@
             align-items: center;
             background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #f0e6d2;
+            padding: 20px;
         }
 
         .countdown-title {
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
         .timer {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .timer-unit {
@@ -193,7 +194,7 @@
 
         .timer-unit span {
             display: block;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-dark);
         }
@@ -211,18 +212,19 @@
             z-index: 10;
             cursor: pointer;
             touch-action: none;
+            border-radius: 20px;
         }
 
         .scratch-hint {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--primary);
-            margin-bottom: 5px;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
         /* DÜĞÜN AKIŞI TIMELINE */
         .timeline {
             margin: 40px 0;
-            position: relative;
         }
 
         .section-title {
@@ -266,13 +268,14 @@
             background-color: var(--primary);
         }
 
-        /* FOTOĞRAF YÜKLEME VE LCV FORMU */
+        /* FOTOĞRAF PAYLAŞIM VE LCV FORMU */
         .interactive-card {
             background: #fff;
             padding: 25px;
             border-radius: 15px;
             margin: 30px 0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f0e6d2;
         }
 
         .form-group {
@@ -306,7 +309,6 @@
             cursor: pointer;
         }
 
-        /* FOOTER */
         footer {
             margin-top: 50px;
             font-size: 0.8rem;
@@ -320,16 +322,17 @@
     <div class="music-control" id="musicToggle" onclick="toggleMusic()">
         <i class="fa-solid fa-music"></i>
     </div>
-    <!-- ÖRNEK MÜZİK SES DOSYASI -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto">
+        <source src="muzik.mp3" type="audio/mpeg">
     </audio>
 
     <!-- 1. ZARF EKRANI -->
     <div id="envelope-screen">
-        <div class="envelope-card">
-            <h2>Elif & Ali</h2>
-            <p style="color: #888; font-size: 0.9rem;">Düğün Davetiyesi</p>
+        <div class="envelope-container">
+            <!-- zarf.png dosyanız burada gösteriliyor -->
+            <img src="zarf.png" alt="Düğün Zarfı" class="envelope-img" onerror="this.style.display='none'; document.getElementById('fallback-title').style.display='block';">
+            <h2 id="fallback-title" style="display:none; font-family:'Great Vibes', cursive; font-size:3rem; color:var(--primary); margin-bottom:15px;">Elif & Ali</h2>
+            <br>
             <button class="open-btn" onclick="openInvitation()">Davetiyeyi Aç</button>
         </div>
     </div>
@@ -366,7 +369,7 @@
                     <div class="timer-unit"><span id="seconds">00</span><label>Saniye</label></div>
                 </div>
             </div>
-            <canvas id="scratch-canvas" width="280" height="250"></canvas>
+            <canvas id="scratch-canvas" width="300" height="260"></canvas>
         </div>
 
         <!-- DAVET YAZISI -->
@@ -489,51 +492,57 @@
             }
         }, 1000);
 
-        // 4. KALP KAZI-KAZAN / SİLME EFEKTİ (CANVAS)
+        // 4. DÜZGÜN KALP KAZI-KAZAN / SİLME EFEKTİ (CANVAS)
         const canvas = document.getElementById('scratch-canvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
 
         function initCanvas() {
-            // Kırmızı/Pembe Kalp Silme Kaplaması
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#e74c3c';
+            
+            // Orantılı Kalp Çizimi
+            const width = canvas.width;
+            const height = canvas.height;
+            
             ctx.beginPath();
-            // Kalp Çizimi
-            const topCurveHeight = 250 * 0.3;
-            ctx.moveTo(140, 250 * 0.7);
-            ctx.bezierCurveTo(140, 250 * 0.6, 70, 250 * 0.1, 70, topCurveHeight);
-            ctx.bezierCurveTo(70, 0, 140, 0, 140, 250 * 0.3);
-            ctx.bezierCurveTo(140, 0, 210, 0, 210, topCurveHeight);
-            ctx.bezierCurveTo(210, 250 * 0.1, 140, 250 * 0.6, 140, 250 * 0.7);
+            ctx.moveTo(width / 2, height * 0.85);
+            // Sol taraf
+            ctx.bezierCurveTo(width * 0.1, height * 0.55, width * 0.05, height * 0.15, width * 0.3, height * 0.15);
+            ctx.bezierCurveTo(width * 0.45, height * 0.15, width / 2, height * 0.3, width / 2, height * 0.35);
+            // Sağ taraf
+            ctx.bezierCurveTo(width / 2, height * 0.3, width * 0.55, height * 0.15, width * 0.7, height * 0.15);
+            ctx.bezierCurveTo(width * 0.95, height * 0.15, width * 0.9, height * 0.55, width / 2, height * 0.85);
             ctx.closePath();
             ctx.fill();
 
-            // Kalp üzerine metin
+            // Kalp üzerine Türkçe Rehber Yazısı
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 16px Montserrat';
+            ctx.font = 'bold 15px Montserrat';
             ctx.textAlign = 'center';
-            ctx.fillText('Beni Sil!', 140, 100);
-            ctx.font = '24px Montserrat';
-            ctx.fillText('❤️', 140, 130);
+            ctx.fillText('Beni Sil!', width / 2, height * 0.45);
+            ctx.font = '22px Montserrat';
+            ctx.fillText('❤️', width / 2, height * 0.58);
         }
 
         function scratch(e) {
             if (!isDrawing) return;
             const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - rect.left;
-            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+            const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
 
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 20, 0, Math.PI * 2);
+            ctx.arc(x, y, 22, 0, Math.PI * 2);
             ctx.fill();
         }
 
         canvas.addEventListener('mousedown', () => isDrawing = true);
         canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseleave', () => isDrawing = false);
         canvas.addEventListener('mousemove', scratch);
 
-        canvas.addEventListener('touchstart', () => isDrawing = true);
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
         canvas.addEventListener('touchend', () => isDrawing = false);
         canvas.addEventListener('touchmove', scratch);
 
