@@ -14,7 +14,6 @@
             --primary-gold: #c5a059;
             --gold-hover: #a37f3e;
             --dark-gold: #8e6d2f;
-            --bg-luxury: #f4efe6;
             --card-bg: #ffffff;
             --text-main: #2b2b2b;
             --text-muted: #6e6e6e;
@@ -37,64 +36,71 @@
             line-height: 1.6;
         }
 
-        /* 1. ZARF & AÇILIŞ EKRANI (TAM EKRAN LÜKS SUNUM) */
+        /* 1. ZARF & AÇILIŞ EKRANI (TAM EKRAN + MÜHÜR TIKLAMA) */
         #envelope-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(circle, #f5f0e6 0%, #dfd5c2 100%);
+            background: #e8e2d5;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
-            padding: 20px;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 550px; /* Zarf büyütüldü */
+            width: 100vw;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            background: radial-gradient(circle, #f7f3ec 0%, #dfd5c2 100%);
         }
 
         .envelope-img {
-            width: 90%;
-            max-height: 420px;
+            max-width: 95%;
+            max-height: 90vh;
             object-fit: contain;
-            margin-bottom: 30px;
-            filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.2));
-            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0px 20px 35px rgba(0,0,0,0.25));
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .open-btn {
-            padding: 16px 45px;
-            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Cinzel', serif;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 2px;
+        /* MÜHÜR TIKLAMA ALANI (GÖRSELİN TAM ORTASI) */
+        .seal-clickable-area {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
             cursor: pointer;
-            box-shadow: var(--shadow-gold);
-            transition: all 0.4s ease;
+            z-index: 20;
+            /* Hafif nabız hareketi ile tıklanabilir olduğunu hissettirir */
+            animation: pulse-glow 2s infinite;
         }
 
-        .open-btn:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 15px 30px rgba(197, 160, 89, 0.4);
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(197, 160, 89, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
+
+        .seal-hint {
+            position: absolute;
+            top: calc(50% + 75px);
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--dark-gold);
+            letter-spacing: 3px;
+            pointer-events: none;
+            opacity: 0.8;
+            white-space: nowrap;
         }
 
         /* MÜZİK BUTONU */
@@ -119,10 +125,6 @@
             transition: all 0.3s ease;
         }
 
-        .music-control:hover {
-            transform: rotate(360deg);
-        }
-
         /* 2. ANA İÇERİK CONTAINER */
         #main-content {
             opacity: 0;
@@ -133,7 +135,6 @@
             padding: 50px 20px 80px 20px;
         }
 
-        /* LÜKS KART KUTULARI */
         .luxury-card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -153,7 +154,6 @@
             pointer-events: none;
         }
 
-        /* 3. YAZI STİLLERİ & BAŞLIKLAR */
         .monogram {
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
@@ -167,7 +167,6 @@
             font-size: 4.5rem;
             color: var(--text-main);
             margin: 15px 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         .couple-names span {
@@ -220,11 +219,12 @@
             color: #555;
         }
 
-        /* GERİ SAYIM & KALP SİLME */
+        /* 3. ŞIK DÜZ PARILTILI SÜTUN (KAZIMA ALANI) */
         .scratch-container {
             position: relative;
-            width: 320px;
-            height: 270px;
+            width: 100%;
+            max-width: 380px;
+            height: 110px;
             margin: 25px auto;
         }
 
@@ -236,28 +236,26 @@
             justify-content: center;
             align-items: center;
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.03);
+            border-radius: 12px;
             border: 1px solid #efe6d5;
-            padding: 20px;
+            padding: 15px;
         }
 
         .timer {
             display: flex;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 20px;
         }
 
         .timer-unit span {
             font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 700;
             color: var(--primary-gold);
         }
 
         .timer-unit label {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -269,10 +267,9 @@
             z-index: 10;
             cursor: pointer;
             touch-action: none;
-            border-radius: 16px;
+            border-radius: 12px;
         }
 
-        /* 4. ZENGİNLEŞTİRİLMİŞ İÇERİK ALANLARI */
         .program-flow {
             text-align: left;
             max-width: 400px;
@@ -346,7 +343,6 @@
             margin-bottom: 5px;
         }
 
-        /* FORM DÜZENİ */
         .form-group {
             margin-bottom: 15px;
             text-align: left;
@@ -389,12 +385,13 @@
         <source src="muzik.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- 1. ZARF EKRANI (BUYUK VE LÜKS) -->
+    <!-- 1. ZARF EKRANI (TAM EKRAN + MÜHÜRDEN AÇILMA) -->
     <div id="envelope-screen">
         <div class="envelope-wrapper">
-            <img src="zarf.png" alt="Düğün Zarfı" class="envelope-img" onerror="this.style.display='none'; document.getElementById('fallback-title').style.display='block';">
-            <h2 id="fallback-title" style="display:none; font-family:'Great Vibes', cursive; font-size:4rem; color:var(--primary-gold); margin-bottom:20px;">Elif & Ali</h2>
-            <button class="open-btn" onclick="openInvitation()">DAVETİYEYİ AÇ</button>
+            <img src="zarf.png" alt="Düğün Zarfı" class="envelope-img">
+            <!-- Mühürün tam üstüne denk gelen görünmez tıklama alanı -->
+            <div class="seal-clickable-area" onclick="openInvitation()" title="Davetiyeyi Aç"></div>
+            <div class="seal-hint">MÜHÜRE DOKUNUN</div>
         </div>
     </div>
 
@@ -423,13 +420,13 @@
                 </div>
             </div>
 
-            <p style="font-family:'Montserrat', sans-serif; font-size:0.85rem; color:var(--primary-gold); font-weight:600;">
-                <i class="fa-solid fa-sparkles"></i> Kalbi silerek geri sayımı başlatın!
+            <p style="font-family:'Cinzel', serif; font-size:0.85rem; color:var(--primary-gold); letter-spacing:2px; font-weight:600; margin-top:20px;">
+                DÜĞÜNE KALAN SÜRE
             </p>
             
+            <!-- PARILTILI SÜTUN KAZIMA ALANI -->
             <div class="scratch-container">
                 <div class="countdown-box">
-                    <div style="font-family:'Cinzel', serif; font-size:0.9rem; color:var(--primary-gold); font-weight:700; letter-spacing:1px;">DÜĞÜNE KALAN SÜRE</div>
                     <div class="timer">
                         <div class="timer-unit"><span id="days">00</span><label>Gün</label></div>
                         <div class="timer-unit"><span id="hours">00</span><label>Saat</label></div>
@@ -437,7 +434,7 @@
                         <div class="timer-unit"><span id="seconds">00</span><label>Saniye</label></div>
                     </div>
                 </div>
-                <canvas id="scratch-canvas" width="320" height="270"></canvas>
+                <canvas id="scratch-canvas" width="380" height="110"></canvas>
             </div>
         </div>
 
@@ -493,7 +490,7 @@
             </a>
         </div>
 
-        <!-- BİLGİLENDİRME & NOTLAR (YENİ KART) -->
+        <!-- BİLGİLENDİRME & NOTLAR -->
         <div class="luxury-card">
             <div class="sub-heading">ÖNEMLİ NOTLAR</div>
             <div class="info-grid">
@@ -597,33 +594,28 @@
             }
         }, 1000);
 
-        // KALP SİLME EFEKTİ
+        // LÜKS ALTIN SÜTUN KAZIMA EFEKTİ
         const canvas = document.getElementById('scratch-canvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
 
         function initCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#c5a059'; // Altın Kalp
             
-            const width = canvas.width;
-            const height = canvas.height;
+            // Altın Parıltılı Gradyan
+            let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grad.addColorStop(0, '#d4af37');
+            grad.addColorStop(0.5, '#fff2a8');
+            grad.addColorStop(1, '#aa7c11');
             
-            ctx.beginPath();
-            ctx.moveTo(width / 2, height * 0.85);
-            ctx.bezierCurveTo(width * 0.1, height * 0.55, width * 0.05, height * 0.15, width * 0.3, height * 0.15);
-            ctx.bezierCurveTo(width * 0.45, height * 0.15, width / 2, height * 0.3, width / 2, height * 0.35);
-            ctx.bezierCurveTo(width / 2, height * 0.3, width * 0.55, height * 0.15, width * 0.7, height * 0.15);
-            ctx.bezierCurveTo(width * 0.95, height * 0.15, width * 0.9, height * 0.55, width / 2, height * 0.85);
-            ctx.closePath();
-            ctx.fill();
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '600 14px Montserrat';
+            // Şık Yazı
+            ctx.fillStyle = '#4a3b10';
+            ctx.font = '600 13px Cinzel';
             ctx.textAlign = 'center';
-            ctx.fillText('Beni Sil!', width / 2, height * 0.45);
-            ctx.font = '20px Montserrat';
-            ctx.fillText('✨', width / 2, height * 0.58);
+            ctx.fillText('✨ SÜREDEN HABERDAR OLMAK İÇİN SIYIRIN ✨', canvas.width / 2, canvas.height / 2 + 5);
         }
 
         function scratch(e) {
@@ -634,7 +626,7 @@
 
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.arc(x, y, 28, 0, Math.PI * 2);
             ctx.fill();
         }
 
