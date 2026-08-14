@@ -3,643 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elif & Ali - Düğün Davetiyesi</title>
+    <title>Düğün Davetiyesi</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <!-- AOS Scroll Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-gold: #c5a059;
-            --gold-hover: #a37f3e;
-            --dark-gold: #8e6d2f;
-            --card-bg: #ffffff;
-            --text-main: #2b2b2b;
-            --text-muted: #6e6e6e;
-            --shadow-soft: 0 10px 30px rgba(0,0,0,0.06);
-            --shadow-gold: 0 10px 25px rgba(197, 160, 89, 0.25);
-        }
-
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
-            background: radial-gradient(circle at center, #faf7f2 0%, #eae3d2 100%);
-            color: var(--text-main);
+            background-color: #0d0d0d;
+            font-family: 'Montserrat', sans-serif;
+            color: #d4af37;
             overflow-x: hidden;
-            text-align: center;
-            line-height: 1.6;
         }
 
-        /* 1. ZARF & AÇILIŞ EKRANI (TAM EKRAN + MÜHÜR TIKLAMA) */
+        /* --- ZARF EKRANI (AÇILIŞ) --- */
         #envelope-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #e8e2d5;
+            background: #0a0a0a;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 90%;
+            max-width: 420px;
+            aspect-ratio: 3/4;
+            background: url('zarf.png') center/cover no-repeat;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(212, 175, 55, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle, #f7f3ec 0%, #dfd5c2 100%);
         }
 
-        .envelope-img {
-            max-width: 95%;
-            max-height: 90vh;
-            object-fit: contain;
-            filter: drop-shadow(0px 20px 35px rgba(0,0,0,0.25));
-        }
-
-        /* MÜHÜR TIKLAMA ALANI (GÖRSELİN TAM ORTASI) */
-        .seal-clickable-area {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120px;
-            height: 120px;
+        /* Ortadaki Tıklanabilir Yuvarlak Mühür Alanı */
+        .seal-click-area {
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             cursor: pointer;
-            z-index: 20;
-            /* Hafif nabız hareketi ile tıklanabilir olduğunu hissettirir */
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(197, 160, 89, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
-        }
-
-        .seal-hint {
-            position: absolute;
-            top: calc(50% + 75px);
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            color: var(--dark-gold);
-            letter-spacing: 3px;
-            pointer-events: none;
-            opacity: 0.8;
-            white-space: nowrap;
-        }
-
-        /* MÜZİK BUTONU */
-        .music-control {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-            border: 1px solid var(--primary-gold);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            color: var(--primary-gold);
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-        }
-
-        /* 2. ANA İÇERİK CONTAINER */
-        #main-content {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1.2s ease;
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 50px 20px 80px 20px;
-        }
-
-        .luxury-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px 30px;
-            margin-bottom: 35px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(197, 160, 89, 0.25);
-            position: relative;
-        }
-
-        .luxury-card::before {
-            content: '';
-            position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border: 1px solid rgba(197, 160, 89, 0.15);
-            border-radius: 14px;
-            pointer-events: none;
-        }
-
-        .monogram {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: var(--primary-gold);
-            letter-spacing: 6px;
-            margin-bottom: 10px;
-        }
-
-        .couple-names {
-            font-family: 'Great Vibes', cursive;
-            font-size: 4.5rem;
-            color: var(--text-main);
-            margin: 15px 0;
-        }
-
-        .couple-names span {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            color: var(--primary-gold);
-            display: inline-block;
-            margin: 0 10px;
-        }
-
-        .sub-heading {
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            color: var(--primary-gold);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .quote-text {
-            font-size: 1.3rem;
-            font-style: italic;
-            color: #4a4a4a;
-            max-width: 85%;
-            margin: 25px auto;
-            line-height: 1.8;
-        }
-
-        .family-section {
-            display: flex;
-            justify-content: space-around;
-            margin: 35px 0;
-            padding: 20px 0;
-            border-top: 1px solid rgba(197, 160, 89, 0.2);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-        }
-
-        .family-box h4 {
-            font-family: 'Cinzel', serif;
-            color: var(--primary-gold);
-            font-size: 0.95rem;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-
-        .family-box p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #555;
-        }
-
-        /* 3. ŞIK DÜZ PARILTILI SÜTUN (KAZIMA ALANI) */
-        .scratch-container {
-            position: relative;
-            width: 100%;
-            max-width: 380px;
-            height: 110px;
-            margin: 25px auto;
-        }
-
-        .countdown-box {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #efe6d5;
-            padding: 15px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            animation: pulse 2s infinite;
+            transition: transform 0.3s ease;
         }
 
-        .timer {
-            display: flex;
-            gap: 20px;
+        .seal-click-area:hover {
+            transform: scale(1.08);
+            border-color: #f3e5ab;
+            box-shadow: 0 0 25px rgba(243, 229, 171, 0.7);
         }
 
-        .timer-unit span {
+        .seal-click-area span {
             font-family: 'Cinzel', serif;
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: var(--primary-gold);
-        }
-
-        .timer-unit label {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        canvas#scratch-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 10;
-            cursor: pointer;
-            touch-action: none;
-            border-radius: 12px;
-        }
-
-        .program-flow {
-            text-align: left;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .program-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 18px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.95rem;
-        }
-
-        .program-time {
-            font-weight: 600;
-            color: var(--primary-gold);
-            width: 80px;
-            font-family: 'Cinzel', serif;
-        }
-
-        .program-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary-gold);
-            border-radius: 50%;
-            margin: 0 15px;
-        }
-
-        .btn-gold {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 30px;
-            background: var(--primary-gold);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 30px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-gold:hover {
-            background: var(--dark-gold);
-            box-shadow: var(--shadow-gold);
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-            text-align: left;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
-        }
-
-        .info-item {
-            background: #faf7f2;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 3px solid var(--primary-gold);
-        }
-
-        .info-item i {
-            color: var(--primary-gold);
-            margin-bottom: 5px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-family: inherit;
-            background: #fafafa;
-        }
-
-        footer {
-            margin-top: 40px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            color: #888;
+            font-size: 11px;
             letter-spacing: 2px;
+            color: #f3e5ab;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .seal-click-area i {
+            font-size: 18px;
+            color: #d4af37;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6); }
+            70% { box-shadow: 0 0 0 18px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* Zarf Açılınca Yok Olma */
+        .envelope-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* --- ANA KART İÇERİĞİ --- */
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: url('kart.png') top center / cover no-repeat fixed;
+            position: relative;
+            padding: 60px 25px 80px 25px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease 0.5s;
+        }
+
+        .main-container.visible {
+            opacity: 1;
+        }
+
+        /* Başlıklar & Yazılar */
+        .sub-title {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            color: #f3e5ab;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            color: #fcf6ba;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            margin: 15px 0;
+            line-height: 1.2;
+        }
+
+        .ampersand {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #d4af37;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .quote {
+            font-size: 13px;
+            font-style: italic;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin: 30px 0;
+            padding: 0 10px;
+            font-weight: 300;
+        }
+
+        /* Ayraç Çizgi */
+        .divider {
+            height: 1px;
+            width: 60%;
+            background: linear-gradient(to right, transparent, #d4af37, transparent);
+            margin: 35px auto;
+        }
+
+        /* Tarih ve Saat */
+        .date-box {
+            margin: 25px 0;
+        }
+
+        .date-box .date {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            letter-spacing: 3px;
+            color: #fcf6ba;
+        }
+
+        .date-box .time {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #d4af37;
+            margin-top: 5px;
+        }
+
+        /* Geri Sayım */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .count-item {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 10px 12px;
+            border-radius: 8px;
+            min-width: 65px;
+            backdrop-filter: blur(4px);
+        }
+
+        .count-item span {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fcf6ba;
+        }
+
+        .count-item label {
+            font-size: 9px;
+            letter-spacing: 1px;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        /* Mekan Detayları */
+        .venue-title {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            color: #fcf6ba;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .venue-address {
+            font-size: 13px;
+            color: #cccccc;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Butonlar (Harita Vb.) */
+        .btn-map {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 1px solid #d4af37;
+            border-radius: 25px;
+            color: #fcf6ba;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .btn-map:hover {
+            background: #d4af37;
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+        }
+
+        /* Müzik Kontrol Butonu */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #d4af37;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #d4af37;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body>
 
-    <!-- MÜZİK ÇALAR -->
-    <div class="music-control" id="musicToggle" onclick="toggleMusic()">
+    <!-- Müzik Dosyası -->
+    <audio id="bg-music" src="muzik.mp3" loop></audio>
+
+    <!-- Müzik Başlat/Durdur Butonu (Sağ Altta Sabit) -->
+    <div class="music-control" id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music"></i>
     </div>
-    <audio id="bgMusic" loop preload="auto">
-        <source src="muzik.mp3" type="audio/mpeg">
-    </audio>
 
-    <!-- 1. ZARF EKRANI (TAM EKRAN + MÜHÜRDEN AÇILMA) -->
+    <!-- ZARF AÇILIŞ EKRANI -->
     <div id="envelope-screen">
         <div class="envelope-wrapper">
-            <img src="zarf.png" alt="Düğün Zarfı" class="envelope-img">
-            <!-- Mühürün tam üstüne denk gelen görünmez tıklama alanı -->
-            <div class="seal-clickable-area" onclick="openInvitation()" title="Davetiyeyi Aç"></div>
-            <div class="seal-hint">MÜHÜRE DOKUNUN</div>
+            <!-- Sadece bu yuvarlak alana basınca açılacak -->
+            <div class="seal-click-area" onclick="openEnvelope()">
+                <i class="fa-solid fa-heart"></i>
+                <span>TIKLAYIN</span>
+            </div>
         </div>
     </div>
 
-    <!-- 2. ANA İÇERİK -->
-    <div id="main-content">
-        
-        <!-- BAŞLIK KARTI -->
-        <div class="luxury-card">
-            <div class="monogram">E & A</div>
-            <div class="couple-names">
-                Elif <span>&</span> Ali
-            </div>
+    <!-- ANA DAVETİYE KARTI -->
+    <div class="main-container" id="main-card">
 
-            <p class="quote-text">
-                "Hayatımızın en özel gününde, mutluluğumuzu sizinle paylaşmaktan onur duyarız."
-            </p>
-
-            <div class="family-section">
-                <div class="family-box">
-                    <h4>GELİN AİLESİ</h4>
-                    <p>EYLÜL AİLESİ</p>
-                </div>
-                <div class="family-box">
-                    <h4>DAMAT AİLESİ</h4>
-                    <p>CANDAN AİLESİ</p>
-                </div>
-            </div>
-
-            <p style="font-family:'Cinzel', serif; font-size:0.85rem; color:var(--primary-gold); letter-spacing:2px; font-weight:600; margin-top:20px;">
-                DÜĞÜNE KALAN SÜRE
-            </p>
-            
-            <!-- PARILTILI SÜTUN KAZIMA ALANI -->
-            <div class="scratch-container">
-                <div class="countdown-box">
-                    <div class="timer">
-                        <div class="timer-unit"><span id="days">00</span><label>Gün</label></div>
-                        <div class="timer-unit"><span id="hours">00</span><label>Saat</label></div>
-                        <div class="timer-unit"><span id="minutes">00</span><label>Dakika</label></div>
-                        <div class="timer-unit"><span id="seconds">00</span><label>Saniye</label></div>
-                    </div>
-                </div>
-                <canvas id="scratch-canvas" width="380" height="110"></canvas>
+        <div data-aos="fade-down" data-aos-duration="1200">
+            <div class="sub-title">EVLENİYORUZ</div>
+            <div class="names">
+                Ali <span class="ampersand">&</span> Elif
             </div>
         </div>
 
-        <!-- TARİH & PROGRAM KARTI -->
-        <div class="luxury-card">
-            <div class="sub-heading">TARİH & PROGRAM</div>
-            <h3 style="font-family:'Cinzel', serif; font-size:2rem; color:var(--text-main); margin-bottom:5px;">12 ARALIK 2027</h3>
-            <p style="font-family:'Montserrat', sans-serif; color:var(--text-muted); font-size:0.9rem; margin-bottom:30px;">PAZAR | SAAT: 19:00</p>
+        <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
 
-            <div class="program-flow">
-                <div class="program-item">
-                    <div class="program-time">19:00</div>
-                    <div class="program-dot"></div>
-                    <div>Karşılama & Kokteyl</div>
-                </div>
-                <div class="program-item">
-                    <div class="program-time">19:45</div>
-                    <div class="program-dot"></div>
-                    <div>Gelin & Damat Giriş Dansı</div>
-                </div>
-                <div class="program-item">
-                    <div class="program-time">20:30</div>
-                    <div class="program-dot"></div>
-                    <div>Nikah Töreni</div>
-                </div>
-                <div class="program-item">
-                    <div class="program-time">21:15</div>
-                    <div class="program-dot"></div>
-                    <div>Pasta Kesimi & Yemek</div>
-                </div>
-                <div class="program-item">
-                    <div class="program-time">22:30</div>
-                    <div class="program-dot"></div>
-                    <div>After Party</div>
-                </div>
+        <p class="quote" data-aos="fade-up" data-aos-duration="1200">
+            "Birbirimizi tamamladığımız bu özel günde, hayatımızın en güzel 'Evet'ini derken siz değerli dostlarımızı aramızda görmekten mutluluk duyarız."
+        </p>
+
+        <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
+
+        <!-- TARİH VE SAAT -->
+        <div class="date-box" data-aos="fade-up" data-aos-duration="1200">
+            <div class="date">15 AĞUSTOS 2027</div>
+            <div class="time">PAZAR | SAAT: 19:00</div>
+        </div>
+
+        <!-- GERİ SAYIM -->
+        <div class="countdown" data-aos="flip-up" data-aos-duration="1200">
+            <div class="count-item">
+                <span id="days">00</span>
+                <label>Gün</label>
             </div>
+            <div class="count-item">
+                <span id="hours">00</span>
+                <label>Saat</label>
+            </div>
+            <div class="count-item">
+                <span id="minutes">00</span>
+                <label>Dakika</label>
+            </div>
+            <div class="count-item">
+                <span id="seconds">00</span>
+                <label>Saniye</label>
+            </div>
+        </div>
 
-            <br>
-            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Elif+%26+Ali+D%C3%BC%C4%9F%C3%BCn%C3%BC&dates=20271212T190000/20271212T235900&details=Mutlulu%C4%9fumuzu+payla%C5%9fmaya+davetlisiniz!&location=Alemdar+K%C4%B1r+D%C3%BC%C4%9F%C3%BCn+Salonu" target="_blank" class="btn-gold">
-                <i class="fa-regular fa-calendar-plus"></i> Takvime Ekle
+        <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
+
+        <!-- MEKAN VE ADRES -->
+        <div data-aos="fade-up" data-aos-duration="1200">
+            <div class="venue-title">Boran Park Düğün Salonu</div>
+            <p class="venue-address">
+                Sincan / Ankara<br>
+                Yenikent Bucağı Yolu Üzeri
+            </p>
+            <a href="https://maps.google.com" target="_blank" class="btn-map">
+                <i class="fa-solid fa-location-dot"></i> Haritada Gör
             </a>
         </div>
-
-        <!-- MEKAN KARTI -->
-        <div class="luxury-card">
-            <div class="sub-heading">DÜĞÜN MEKANI</div>
-            <h3 style="font-family:'Cinzel', serif; font-size:1.4rem; margin-bottom:10px;">ALEMDAR KIR DÜĞÜN SALONU</h3>
-            <p style="font-family:'Montserrat', sans-serif; font-size:0.9rem; color:var(--text-muted); max-width:80%; margin:0 auto 20px auto;">
-                Arapzade Mah. Refik Atay Cad. / Arkaltı Sok. No:12, Orhangazi / Bursa
-            </p>
-            <a href="https://www.google.com/maps/place/Alemdar+K%C4%B1r+D%C3%BC%C4%9F%C3%BCn+Salonu/@40.5056475,29.3072178,17z/" target="_blank" class="btn-gold">
-                <i class="fa-solid fa-location-dot"></i> Haritada Yol Tarifi Al
-            </a>
-        </div>
-
-        <!-- BİLGİLENDİRME & NOTLAR -->
-        <div class="luxury-card">
-            <div class="sub-heading">ÖNEMLİ NOTLAR</div>
-            <div class="info-grid">
-                <div class="info-item">
-                    <i class="fa-solid fa-square-parking"></i>
-                    <strong>Otopark:</strong><br>
-                    Mekanımızda ücretsiz vale ve otopark hizmeti mevcuttur.
-                </div>
-                <div class="info-item">
-                    <i class="fa-solid fa-child-reaching"></i>
-                    <strong>Çocuk Alanı:</strong><br>
-                    Küçük misafirlerimiz için oyun alanı mevcuttur.
-                </div>
-            </div>
-        </div>
-
-        <!-- ANILAR & FOTOĞRAF YÜKLEME -->
-        <div class="luxury-card">
-            <div class="sub-heading">ANILARINIZI PAYLAŞIN</div>
-            <p style="font-family:'Montserrat', sans-serif; font-size:0.85rem; color:var(--text-muted); margin-bottom:20px;">
-                Düğün gecesi çektiğiniz kareleri yükleyerek dijital anı defterimize katkıda bulunabilirsiniz!
-            </p>
-            <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="alert('Fotoğrafınız iletildi! Teşekkür ederiz.')">
-            <button class="btn-gold" style="background:#2b2b2b;" onclick="document.getElementById('photoUpload').click()">
-                <i class="fa-solid fa-camera"></i> Fotoğraf Yükle
-            </button>
-        </div>
-
-        <!-- LCV KATILIM FORMU -->
-        <div class="luxury-card">
-            <div class="sub-heading">L.C.V. KATILIM BİLDİRİMİ</div>
-            <p style="font-family:'Montserrat', sans-serif; font-size:0.85rem; color:var(--text-muted); margin-bottom:20px;">
-                Lütfen 1 Aralık 2027 tarihine kadar katılım durumunuzu bildiriniz.
-            </p>
-            <form onsubmit="event.preventDefault(); alert('Katılım durumunuz iletildi!');">
-                <div class="form-group">
-                    <label>ADINIZ SOYADINIZ</label>
-                    <input type="text" required placeholder="Örn: Ahmet Yılmaz">
-                </div>
-                <div class="form-group">
-                    <label>KATILIM DURUMU</label>
-                    <select required>
-                        <option value="katiliyor">Katılıyorum (1 Kişi)</option>
-                        <option value="katiliyor-2">Katılıyorum (2 Kişi)</option>
-                        <option value="katilmiyor">Maalesef Katılamıyorum</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-gold" style="width:100%; margin-top:10px;">GÖNDER</button>
-            </form>
-        </div>
-
-        <footer>
-            <p>ELİF & ALİ • 2027</p>
-            <p style="font-size:0.7rem; margin-top:5px; color:#aaa;">#ElifAliEvleniyor</p>
-        </footer>
 
     </div>
 
-    <!-- SCRIPT -->
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const bgMusic = document.getElementById('bgMusic');
+        // AOS Animasyonlarını Başlat
+        AOS.init({
+            once: true,
+            duration: 1000
+        });
+
+        const music = document.getElementById('bg-music');
         let isPlaying = false;
 
+        function openEnvelope() {
+            // Zarfı Kapat
+            const env = document.getElementById('envelope-screen');
+            env.classList.add('hidden');
+
+            // Ana kartı görünür yap
+            const mainCard = document.getElementById('main-card');
+            mainCard.classList.add('visible');
+
+            // Müziği Başlat
+            music.play().then(() => {
+                isPlaying = true;
+            }).catch(err => {
+                console.log("Müzik otomatik başlatılamadı: ", err);
+            });
+
+            // Animasyonları tetikle
+            setTimeout(() => {
+                AOS.refresh();
+            }, 300);
+        }
+
         function toggleMusic() {
+            const btnIcon = document.querySelector('#music-btn i');
             if (isPlaying) {
-                bgMusic.pause();
-                document.getElementById('musicToggle').innerHTML = '<i class="fa-solid fa-music"></i>';
+                music.pause();
+                btnIcon.className = 'fa-solid fa-volume-xmark';
             } else {
-                bgMusic.play();
-                document.getElementById('musicToggle').innerHTML = '<i class="fa-solid fa-pause"></i>';
+                music.play();
+                btnIcon.className = 'fa-solid fa-music';
             }
             isPlaying = !isPlaying;
         }
 
-        function openInvitation() {
-            document.getElementById('envelope-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('envelope-screen').style.display = 'none';
-                const mainContent = document.getElementById('main-content');
-                mainContent.style.visibility = 'visible';
-                mainContent.style.opacity = '1';
-                
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    document.getElementById('musicToggle').innerHTML = '<i class="fa-solid fa-pause"></i>';
-                }).catch(() => {});
-            }, 1000);
-        }
+        // GERİ SAYIM SCRIPT
+        const weddingDate = new Date("August 15, 2027 19:00:00").getTime();
 
-        // GERİ SAYIM
-        const targetDate = new Date("2027-12-12T19:00:00").getTime();
-        setInterval(() => {
+        const timer = setInterval(function() {
             const now = new Date().getTime();
-            const difference = targetDate - now;
+            const diff = weddingDate - now;
 
-            if (difference > 0) {
-                document.getElementById("days").innerText = Math.floor(difference / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").innerText = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("minutes").innerText = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("seconds").innerText = Math.floor((difference % (1000 * 60)) / 1000);
+            if (diff > 0) {
+                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
             }
         }, 1000);
-
-        // LÜKS ALTIN SÜTUN KAZIMA EFEKTİ
-        const canvas = document.getElementById('scratch-canvas');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false;
-
-        function initCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Altın Parıltılı Gradyan
-            let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, '#d4af37');
-            grad.addColorStop(0.5, '#fff2a8');
-            grad.addColorStop(1, '#aa7c11');
-            
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Şık Yazı
-            ctx.fillStyle = '#4a3b10';
-            ctx.font = '600 13px Cinzel';
-            ctx.textAlign = 'center';
-            ctx.fillText('✨ SÜREDEN HABERDAR OLMAK İÇİN SIYIRIN ✨', canvas.width / 2, canvas.height / 2 + 5);
-        }
-
-        function scratch(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-            const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
-
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(x, y, 28, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        canvas.addEventListener('mousedown', () => isDrawing = true);
-        canvas.addEventListener('mouseup', () => isDrawing = false);
-        canvas.addEventListener('mouseleave', () => isDrawing = false);
-        canvas.addEventListener('mousemove', scratch);
-
-        canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
-        canvas.addEventListener('touchend', () => isDrawing = false);
-        canvas.addEventListener('touchmove', scratch);
-
-        window.onload = initCanvas;
     </script>
 </body>
 </html>
