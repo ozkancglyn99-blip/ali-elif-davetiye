@@ -2,29 +2,33 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Düğün Davetiyesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Özkan & Nuray - Düğün Davetiyesi</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS Scroll Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             background-color: #0d0d0d;
             font-family: 'Montserrat', sans-serif;
             color: #d4af37;
             overflow-x: hidden;
         }
 
-        /* --- ZARF EKRANI (AÇILIŞ) --- */
+        /* --- ZARF EKRANI (TAM EKRAN MOBİL UYUMLU) --- */
         #envelope-screen {
             position: fixed;
             top: 0;
@@ -36,110 +40,105 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.2s ease, visibility 1.2s ease;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            cursor: pointer;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 90%;
-            max-width: 420px;
-            aspect-ratio: 3/4;
-            background: url('zarf.png') center/cover no-repeat;
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(212, 175, 55, 0.2);
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: url('zarf.png') center center / cover no-repeat;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
         }
 
-        /* Ortadaki Tıklanabilir Yuvarlak Mühür Alanı */
-        .seal-click-area {
-            width: 130px;
-            height: 130px;
+        /* Zarfa Dokun İpucu Mührü */
+        .seal-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            cursor: pointer;
+            background: rgba(13, 13, 13, 0.45);
+            backdrop-filter: blur(3px);
+            border: 1px solid rgba(212, 175, 55, 0.6);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
             animation: pulse 2s infinite;
-            transition: transform 0.3s ease;
+            pointer-events: none; /* Dokunmayı engellemesin, tüm ekrana basılabilsin */
         }
 
-        .seal-click-area:hover {
-            transform: scale(1.08);
-            border-color: #f3e5ab;
-            box-shadow: 0 0 25px rgba(243, 229, 171, 0.7);
+        .seal-hint i {
+            font-size: 20px;
+            color: #f3e5ab;
+            margin-bottom: 4px;
         }
 
-        .seal-click-area span {
+        .seal-hint span {
             font-family: 'Cinzel', serif;
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 2px;
             color: #f3e5ab;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        .seal-click-area i {
-            font-size: 18px;
-            color: #d4af37;
+            font-weight: 600;
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6); }
-            70% { box-shadow: 0 0 0 18px rgba(212, 175, 55, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+            0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6); }
+            70% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 0 18px rgba(212, 175, 55, 0); }
+            100% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
-        /* Zarf Açılınca Yok Olma */
         .envelope-screen.hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
 
-        /* --- ANA KART İÇERİĞİ --- */
+        /* --- ANA PREMİUM KART İÇERİĞİ --- */
         .main-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             margin: 0 auto;
             min-height: 100vh;
             background: url('kart.png') top center / cover no-repeat fixed;
             position: relative;
-            padding: 60px 25px 80px 25px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            padding: 70px 25px 90px 25px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
             text-align: center;
-            opacity: 0;
-            transition: opacity 1.5s ease 0.5s;
+            display: none;
         }
 
         .main-container.visible {
-            opacity: 1;
+            display: block;
         }
 
-        /* Başlıklar & Yazılar */
         .sub-title {
             font-family: 'Cinzel', serif;
-            font-size: 13px;
-            letter-spacing: 4px;
+            font-size: 12px;
+            letter-spacing: 5px;
             color: #f3e5ab;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-transform: uppercase;
         }
 
         .names {
             font-family: 'Great Vibes', cursive;
-            font-size: 48px;
+            font-size: 52px;
             color: #fcf6ba;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            margin: 15px 0;
-            line-height: 1.2;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+            margin: 10px 0;
+            line-height: 1.1;
         }
 
         .ampersand {
@@ -147,61 +146,60 @@
             font-size: 22px;
             color: #d4af37;
             display: block;
-            margin: 5px 0;
+            margin: 4px 0;
         }
 
         .quote {
-            font-size: 13px;
+            font-size: 13.5px;
             font-style: italic;
-            color: #e0e0e0;
-            line-height: 1.6;
-            margin: 30px 0;
+            color: #e6e6e6;
+            line-height: 1.7;
+            margin: 25px 0;
             padding: 0 10px;
             font-weight: 300;
         }
 
-        /* Ayraç Çizgi */
         .divider {
             height: 1px;
-            width: 60%;
+            width: 65%;
             background: linear-gradient(to right, transparent, #d4af37, transparent);
-            margin: 35px auto;
+            margin: 30px auto;
         }
 
-        /* Tarih ve Saat */
         .date-box {
-            margin: 25px 0;
+            margin: 20px 0;
         }
 
         .date-box .date {
             font-family: 'Cinzel', serif;
-            font-size: 20px;
+            font-size: 21px;
             letter-spacing: 3px;
             color: #fcf6ba;
+            font-weight: 600;
         }
 
         .date-box .time {
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 2px;
             color: #d4af37;
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
         /* Geri Sayım */
         .countdown {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
+            gap: 12px;
+            margin: 25px 0;
         }
 
         .count-item {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            padding: 10px 8px;
             border-radius: 8px;
-            min-width: 65px;
-            backdrop-filter: blur(4px);
+            min-width: 62px;
+            backdrop-filter: blur(5px);
         }
 
         .count-item span {
@@ -213,16 +211,15 @@
         }
 
         .count-item label {
-            font-size: 9px;
+            font-size: 8.5px;
             letter-spacing: 1px;
             color: #aaa;
             text-transform: uppercase;
         }
 
-        /* Mekan Detayları */
         .venue-title {
             font-family: 'Cinzel', serif;
-            font-size: 16px;
+            font-size: 17px;
             color: #fcf6ba;
             letter-spacing: 2px;
             margin-bottom: 8px;
@@ -231,40 +228,39 @@
         .venue-address {
             font-size: 13px;
             color: #cccccc;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.6;
+            margin-bottom: 22px;
         }
 
-        /* Butonlar (Harita Vb.) */
         .btn-map {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 12px 32px;
             border: 1px solid #d4af37;
             border-radius: 25px;
             color: #fcf6ba;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 11.5px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
 
-        .btn-map:hover {
+        .btn-map:hover, .btn-map:active {
             background: #d4af37;
             color: #000;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
         }
 
-        /* Müzik Kontrol Butonu */
+        /* Müzik Butonu */
         .music-control {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 42px;
-            height: 42px;
-            background: rgba(0, 0, 0, 0.7);
+            width: 44px;
+            height: 44px;
+            background: rgba(0, 0, 0, 0.75);
             border: 1px solid #d4af37;
             border-radius: 50%;
             display: flex;
@@ -273,27 +269,26 @@
             color: #d4af37;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            box-shadow: 0 0 12px rgba(0,0,0,0.9);
         }
     </style>
 </head>
 <body>
 
-    <!-- Müzik Dosyası -->
+    <!-- Ses Dosyası -->
     <audio id="bg-music" src="muzik.mp3" loop></audio>
 
-    <!-- Müzik Başlat/Durdur Butonu (Sağ Altta Sabit) -->
-    <div class="music-control" id="music-btn" onclick="toggleMusic()">
+    <!-- Müzik Kontrol Butonu -->
+    <div class="music-control" id="music-btn" onclick="toggleMusic(event)">
         <i class="fa-solid fa-music"></i>
     </div>
 
-    <!-- ZARF AÇILIŞ EKRANI -->
-    <div id="envelope-screen">
+    <!-- ZARF AÇILIŞ EKRANI (AÇILMAK İÇİN HERYERE TIKLANABİLİR) -->
+    <div id="envelope-screen" onclick="openEnvelope()">
         <div class="envelope-wrapper">
-            <!-- Sadece bu yuvarlak alana basınca açılacak -->
-            <div class="seal-click-area" onclick="openEnvelope()">
-                <i class="fa-solid fa-heart"></i>
-                <span>TIKLAYIN</span>
+            <div class="seal-hint">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <span>DOKUNUN</span>
             </div>
         </div>
     </div>
@@ -304,22 +299,22 @@
         <div data-aos="fade-down" data-aos-duration="1200">
             <div class="sub-title">EVLENİYORUZ</div>
             <div class="names">
-                Ali <span class="ampersand">&</span> Elif
+                Özkan <span class="ampersand">&</span> Nuray
             </div>
         </div>
 
         <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
 
         <p class="quote" data-aos="fade-up" data-aos-duration="1200">
-            "Birbirimizi tamamladığımız bu özel günde, hayatımızın en güzel 'Evet'ini derken siz değerli dostlarımızı aramızda görmekten mutluluk duyarız."
+            "Hayatımızın en özel gününde, mutluluğumuza tanıklık etmenizden ve bu güzel günü bizimle paylaşmanızdan onur duyarız."
         </p>
 
         <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
 
-        <!-- TARİH VE SAAT -->
+        <!-- TARİH VE SAAT (GERÇEK DÜĞÜN TARİHİN) -->
         <div class="date-box" data-aos="fade-up" data-aos-duration="1200">
-            <div class="date">15 AĞUSTOS 2027</div>
-            <div class="time">PAZAR | SAAT: 19:00</div>
+            <div class="date">07 TEMMUZ 2027</div>
+            <div class="time">ÇARŞAMBA | SAAT: 19:00</div>
         </div>
 
         <!-- GERİ SAYIM -->
@@ -344,15 +339,14 @@
 
         <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
 
-        <!-- MEKAN VE ADRES -->
+        <!-- MEKAN VE ADRES (SİNCAN / ANKARA) -->
         <div data-aos="fade-up" data-aos-duration="1200">
             <div class="venue-title">Boran Park Düğün Salonu</div>
             <p class="venue-address">
-                Sincan / Ankara<br>
-                Yenikent Bucağı Yolu Üzeri
+                Sincan / Ankara
             </p>
-            <a href="https://maps.google.com" target="_blank" class="btn-map">
-                <i class="fa-solid fa-location-dot"></i> Haritada Gör
+            <a href="https://maps.google.com/?q=Boran+Park+Düğün+Salonu+Sincan+Ankara" target="_blank" class="btn-map">
+                <i class="fa-solid fa-location-dot"></i> Haritada Yol Tarifi Al
             </a>
         </div>
 
@@ -361,38 +355,36 @@
     <!-- AOS Animation JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // AOS Animasyonlarını Başlat
-        AOS.init({
-            once: true,
-            duration: 1000
-        });
-
         const music = document.getElementById('bg-music');
         let isPlaying = false;
 
         function openEnvelope() {
-            // Zarfı Kapat
             const env = document.getElementById('envelope-screen');
-            env.classList.add('hidden');
-
-            // Ana kartı görünür yap
             const mainCard = document.getElementById('main-card');
+
+            // Zarfı kapat
+            env.classList.add('hidden');
+            
+            // Kartı görünür yap
             mainCard.classList.add('visible');
 
-            // Müziği Başlat
+            // AOS Animasyonlarını başlat
+            AOS.init({
+                once: true,
+                duration: 1000
+            });
+            AOS.refresh();
+
+            // Müzik çal
             music.play().then(() => {
                 isPlaying = true;
             }).catch(err => {
-                console.log("Müzik otomatik başlatılamadı: ", err);
+                console.log("Müzik otomatik başlatılamadı:", err);
             });
-
-            // Animasyonları tetikle
-            setTimeout(() => {
-                AOS.refresh();
-            }, 300);
         }
 
-        function toggleMusic() {
+        function toggleMusic(e) {
+            e.stopPropagation(); // Zarfa tıklama tetiklenmesin
             const btnIcon = document.querySelector('#music-btn i');
             if (isPlaying) {
                 music.pause();
@@ -404,10 +396,10 @@
             isPlaying = !isPlaying;
         }
 
-        // GERİ SAYIM SCRIPT
-        const weddingDate = new Date("August 15, 2027 19:00:00").getTime();
+        // GERİ SAYIM (07 Temmuz 2027)
+        const weddingDate = new Date("July 7, 2027 19:00:00").getTime();
 
-        const timer = setInterval(function() {
+        setInterval(function() {
             const now = new Date().getTime();
             const diff = weddingDate - now;
 
