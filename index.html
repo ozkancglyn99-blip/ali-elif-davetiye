@@ -1,383 +1,764 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Özkan & Nuray - Düğün Davetiyesi</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Scroll Animation CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elif & Ali — Düğün Davetiyesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF6EE;
+    --ivory-deep:#F1E5CF;
+    --gold:#B8933D;
+    --gold-light:#E7CD8E;
+    --wine:#6E1F2B;
+    --ink:#2B231C;
+    --ink-soft:#5C4F41;
+    --blush:#E9CFC6;
+    --max-w:640px;
+  }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'EB Garamond', serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
 
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            background: #11100e; /* Arka plan tonu uyumlandı */
-            font-family: 'Montserrat', sans-serif;
-            color: #d4af37;
-            overflow-x: hidden;
-        }
+  h1,h2{font-family:'Cormorant Garamond', serif; font-weight:500; margin:0;}
 
-        /* --- ZARF EKRANI --- */
-        #envelope-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #11100e;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
+  a{color:inherit;}
 
-        .envelope-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 450px;
-            height: 100vh;
-            background: url('zarf.png') center center / contain no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  button{
+    font-family:inherit;
+    cursor:pointer;
+    background:none;
+    border:none;
+  }
+  button:focus-visible,
+  input:focus-visible{
+    outline:2px solid var(--wine);
+    outline-offset:3px;
+  }
 
-        /* Zarfın Ortasındaki Görsel Mühre Birebir Oturan Görünmez Tıklama Alanı */
-        .invisible-seal-trigger {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            cursor: pointer;
-            background: transparent; /* Ekstra yazı, ikon veya gölge YOK */
-            z-index: 10;
-        }
+  /* ---------- INTRO ---------- */
+  #intro{
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:#1a1410;
+    transition:opacity 1.1s ease, visibility 1.1s ease;
+  }
+  #intro.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  #introVideo{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.55;
+  }
+  .intro-overlay{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    color:var(--gold-light);
+    padding:0 24px;
+  }
+  .intro-overlay .eyebrow{
+    font-family:'EB Garamond', serif;
+    font-style:italic;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-size:.8rem;
+    margin-bottom:14px;
+    color:var(--gold-light);
+    opacity:.85;
+  }
+  .intro-overlay .intro-names{
+    font-family:'Tangerine', cursive;
+    font-size:5.2rem;
+    line-height:1;
+    margin:0 0 28px;
+    color:#fff;
+  }
+  #openBtn{
+    border:1px solid var(--gold-light);
+    color:var(--gold-light);
+    padding:14px 38px;
+    font-size:.85rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition:background .35s ease, color .35s ease;
+  }
+  #openBtn:hover{
+    background:var(--gold-light);
+    color:#1a1410;
+  }
 
-        .envelope-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+  /* ---------- MAIN ---------- */
+  #invitation{
+    position:relative;
+    background:
+      linear-gradient(180deg, rgba(251,246,238,.94), rgba(251,246,238,.97) 8%, rgba(251,246,238,.97) 92%, rgba(251,246,238,.94)),
+      url('davetiye-arkaplan.jpg') center/cover fixed no-repeat;
+  }
 
-        /* --- ANA PREMİUM KART İÇERİĞİ --- */
-        .main-container {
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: url('kart.png') top center / cover no-repeat fixed;
-            position: relative;
-            padding: 70px 25px 90px 25px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-        }
+  section{
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding:88px 28px;
+    text-align:center;
+  }
 
-        .main-container.visible {
-            opacity: 1;
-        }
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .9s ease, transform .9s ease;
+  }
+  .reveal.in-view{
+    opacity:1;
+    transform:none;
+  }
 
-        .sub-title {
-            font-family: 'Cinzel', serif;
-            font-size: 12px;
-            letter-spacing: 5px;
-            color: #f3e5ab;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
+  .divider-orn{
+    width:64px;
+    height:1px;
+    background:var(--gold);
+    margin:26px auto;
+    position:relative;
+  }
+  .divider-orn::before{
+    content:'✦';
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:var(--cream);
+    color:var(--gold);
+    padding:0 10px;
+    font-size:.7rem;
+  }
 
-        .names {
-            font-family: 'Great Vibes', cursive;
-            font-size: 52px;
-            color: #fcf6ba;
-            text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
-            margin: 10px 0;
-            line-height: 1.1;
-        }
+  /* Hero */
+  .hero{padding-top:120px;}
+  .hero .eyebrow{
+    font-style:italic;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+  }
+  .names{
+    font-size:3.4rem;
+    letter-spacing:.06em;
+    color:var(--wine);
+  }
+  .names .amp{
+    font-family:'Tangerine', cursive;
+    font-size:1.3em;
+    color:var(--gold);
+    padding:0 10px;
+    vertical-align:-.08em;
+  }
 
-        .ampersand {
-            font-family: 'Cinzel', serif;
-            font-size: 22px;
-            color: #d4af37;
-            display: block;
-            margin: 4px 0;
-        }
+  /* Scratch / ring box */
+  .scratch-section{padding-top:40px;}
+  .ring-box{
+    position:relative;
+    width:230px;
+    height:230px;
+    margin:0 auto;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, var(--gold-light), var(--gold) 55%, #8a6a28 100%);
+    box-shadow:0 18px 40px -14px rgba(110,31,43,.35), inset 0 0 0 6px rgba(255,255,255,.15);
+  }
+  .countdown-reveal{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:var(--wine);
+    color:var(--gold-light);
+  }
+  .countdown-reveal .cd-label{
+    font-style:italic;
+    font-size:.7rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    opacity:.8;
+    margin-bottom:6px;
+  }
+  .countdown-reveal .cd-number{
+    font-family:'Cormorant Garamond', serif;
+    font-size:2.5rem;
+    line-height:1;
+  }
+  .countdown-reveal .cd-unit{
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.75;
+    margin-top:4px;
+  }
+  #scratchCanvas{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    touch-action:none;
+    cursor:pointer;
+    transition:opacity .7s ease;
+  }
+  #scratchCanvas.done{
+    opacity:0;
+    pointer-events:none;
+  }
+  .scratch-hint{
+    margin-top:18px;
+    font-style:italic;
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
 
-        .quote {
-            font-size: 13.5px;
-            font-style: italic;
-            color: #e6e6e6;
-            line-height: 1.7;
-            margin: 25px 0;
-            padding: 0 10px;
-            font-weight: 300;
-        }
+  /* Families */
+  .families{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  }
+  .family{display:flex; flex-direction:column; gap:4px; flex:1;}
+  .family .label{
+    font-style:italic;
+    font-size:.75rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .family .name{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.2rem;
+    letter-spacing:.04em;
+    color:var(--wine);
+  }
+  .families .divider-orn{
+    width:1px;
+    height:44px;
+    margin:0 18px;
+  }
+  .families .divider-orn::before{content:''; padding:0;}
 
-        .divider {
-            height: 1px;
-            width: 65%;
-            background: linear-gradient(to right, transparent, #d4af37, transparent);
-            margin: 30px auto;
-        }
+  /* Invite text */
+  .invite-text p{
+    font-style:italic;
+    font-size:1.5rem;
+    line-height:1.5;
+    color:var(--wine);
+    font-family:'Cormorant Garamond', serif;
+  }
 
-        .date-box {
-            margin: 20px 0;
-        }
+  /* Date */
+  .date-section .date{
+    font-family:'Cormorant Garamond', serif;
+    font-size:2.4rem;
+    color:var(--wine);
+    margin-bottom:6px;
+  }
+  .date-section .time{
+    font-style:italic;
+    color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
 
-        .date-box .date {
-            font-family: 'Cinzel', serif;
-            font-size: 21px;
-            letter-spacing: 3px;
-            color: #fcf6ba;
-            font-weight: 600;
-        }
+  /* Venue */
+  .venue-section h2{
+    font-size:1.9rem;
+    color:var(--wine);
+    margin-bottom:14px;
+  }
+  .venue-section p{color:var(--ink-soft);}
+  .venue-section.small h2{font-size:1.3rem;}
+  .venue-section.small p{font-size:.92rem;}
 
-        .date-box .time {
-            font-size: 13px;
-            letter-spacing: 2px;
-            color: #d4af37;
-            margin-top: 6px;
-        }
+  /* Program timeline */
+  .program-section h2{
+    font-size:1.9rem;
+    color:var(--wine);
+    margin-bottom:36px;
+  }
+  .timeline{
+    list-style:none;
+    margin:0;
+    padding:0;
+    text-align:left;
+    position:relative;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left:9px;
+    top:6px;
+    bottom:6px;
+    width:1px;
+    background:var(--gold);
+    opacity:.5;
+  }
+  .timeline li{
+    position:relative;
+    padding:0 0 26px 34px;
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.15rem;
+    color:var(--ink);
+  }
+  .timeline li:last-child{padding-bottom:0;}
+  .timeline li::before{
+    content:'';
+    position:absolute;
+    left:2px;
+    top:6px;
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    background:var(--cream);
+    border:1px solid var(--gold);
+  }
 
-        /* Geri Sayım */
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 25px 0;
-        }
+  /* Memory / photo */
+  .memory-section h2{font-size:1.6rem; color:var(--wine); margin-bottom:10px;}
+  .memory-section p{color:var(--ink-soft); margin-bottom:26px;}
+  .photo-btn{
+    border:1px solid var(--wine);
+    color:var(--wine);
+    padding:13px 30px;
+    font-size:.85rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition:background .3s ease, color .3s ease;
+  }
+  .photo-btn:hover{background:var(--wine); color:var(--cream);}
 
-        .count-item {
-            background: rgba(0, 0, 0, 0.65);
-            border: 1px solid rgba(212, 175, 55, 0.45);
-            padding: 10px 8px;
-            border-radius: 8px;
-            min-width: 62px;
-            backdrop-filter: blur(5px);
-        }
+  /* Gift */
+  .gift-section h2{font-size:1.5rem; color:var(--wine); margin-bottom:10px;}
+  .gift-section p{color:var(--ink-soft);}
+  .gift-section .iban{
+    margin-top:16px;
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.15rem;
+    color:var(--wine);
+    letter-spacing:.03em;
+  }
 
-        .count-item span {
-            display: block;
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            font-weight: bold;
-            color: #fcf6ba;
-        }
+  /* RSVP */
+  .rsvp-section h2{font-size:1.7rem; color:var(--wine); margin-bottom:30px;}
+  #rsvpForm{display:flex; flex-direction:column; gap:18px; align-items:center;}
+  #rsvpForm input[type="text"]{
+    width:100%;
+    max-width:320px;
+    padding:12px 4px;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--gold);
+    text-align:center;
+    font-family:'EB Garamond', serif;
+    font-size:1rem;
+    color:var(--ink);
+  }
+  .rsvp-buttons{display:flex; gap:12px;}
+  .rsvp-btn{
+    border:1px solid var(--wine);
+    color:var(--wine);
+    padding:10px 20px;
+    font-size:.8rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition:background .3s ease, color .3s ease;
+  }
+  .rsvp-btn.selected,
+  .rsvp-btn:hover{
+    background:var(--wine);
+    color:var(--cream);
+  }
+  .submit-btn{
+    margin-top:6px;
+    background:var(--wine);
+    color:var(--cream);
+    padding:13px 40px;
+    font-size:.85rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition:opacity .3s ease;
+  }
+  .submit-btn:hover{opacity:.85;}
+  #rsvpThanks{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.2rem;
+    color:var(--wine);
+  }
 
-        .count-item label {
-            font-size: 8.5px;
-            letter-spacing: 1px;
-            color: #aaa;
-            text-transform: uppercase;
-        }
+  footer{
+    text-align:center;
+    padding:40px 24px 60px;
+    font-style:italic;
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
 
-        .venue-title {
-            font-family: 'Cinzel', serif;
-            font-size: 17px;
-            color: #fcf6ba;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
+  /* Fixed music toggle */
+  #musicToggle{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:40;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--wine);
+    color:var(--gold-light);
+    font-size:1.2rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.4);
+  }
 
-        .venue-address {
-            font-size: 13px;
-            color: #cccccc;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
+  @media (max-width:480px){
+    .names{font-size:2.5rem;}
+    .intro-overlay .intro-names{font-size:3.8rem;}
+    section{padding:64px 22px;}
+  }
 
-        .btn-map {
-            display: inline-block;
-            padding: 12px 32px;
-            border: 1px solid #d4af37;
-            border-radius: 25px;
-            color: #fcf6ba;
-            text-decoration: none;
-            font-size: 11.5px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: rgba(0,0,0,0.6);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-        }
-
-        .btn-map:hover, .btn-map:active {
-            background: #d4af37;
-            color: #000;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-        }
-
-        /* Müzik Butonu */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid #d4af37;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #d4af37;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 0 12px rgba(0,0,0,0.9);
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1; transform:none; transition:none;}
+    #intro{transition:none;}
+  }
+</style>
 </head>
 <body>
 
-    <!-- Müzik Dosyası -->
-    <audio id="bg-music" src="muzik.mp3" loop></audio>
-
-    <!-- Müzik Kontrol Butonu -->
-    <div class="music-control" id="music-btn" onclick="toggleMusic(event)">
-        <i class="fa-solid fa-music"></i>
+  <div id="intro">
+    <video id="introVideo" autoplay muted loop playsinline>
+      <source src="yuzuk-video.mp4" type="video/mp4">
+    </video>
+    <div class="intro-overlay">
+      <p class="eyebrow">Sevgiyle davet ediyoruz</p>
+      <p class="intro-names">Elif &amp; Ali</p>
+      <button id="openBtn">Davetiyeyi Aç</button>
     </div>
+  </div>
 
-    <!-- ZARF AÇILIŞ EKRANI -->
-    <div id="envelope-screen">
-        <div class="envelope-wrapper">
-            <!-- Görsel üzerindeki orijinal mühre denk gelen şeffaf alan -->
-            <div class="invisible-seal-trigger" onclick="openEnvelope()"></div>
+  <main id="invitation">
+
+    <section class="hero reveal">
+      <p class="eyebrow">Sevgiyle davet ediyoruz</p>
+      <h1 class="names">ELİF <span class="amp">&amp;</span> ALİ</h1>
+    </section>
+
+    <section class="scratch-section reveal">
+      <div class="ring-box">
+        <div class="countdown-reveal">
+          <span class="cd-label">Düğüne Kalan</span>
+          <span class="cd-number" id="cdDays">--</span>
+          <span class="cd-unit">Gün</span>
         </div>
-    </div>
+        <canvas id="scratchCanvas" width="230" height="230"></canvas>
+      </div>
+      <p class="scratch-hint">Kalbe dokunup kazıyın ✦</p>
+    </section>
 
-    <!-- ANA DAVETİYE KARTI -->
-    <div class="main-container" id="main-card">
+    <section class="families reveal">
+      <div class="family">
+        <span class="label">Gelin Ailesi</span>
+        <span class="name">EYLÜL AİLESİ</span>
+      </div>
+      <div class="divider-orn"></div>
+      <div class="family">
+        <span class="label">Damat Ailesi</span>
+        <span class="name">CANDAN AİLESİ</span>
+      </div>
+    </section>
 
-        <div data-aos="fade-down" data-aos-duration="1200">
-            <div class="sub-title">EVLENİYORUZ</div>
-            <div class="names">
-                Özkan <span class="ampersand">&</span> Nuray
-            </div>
+    <section class="invite-text reveal">
+      <p>“Mutlu sona değil,<br>sonsuz mutluluğumuzun<br>ilk adımına davetlisiniz.”</p>
+    </section>
+
+    <section class="date-section reveal">
+      <div class="divider-orn"></div>
+      <p class="date">12 Aralık 2027</p>
+      <p class="time">Saat 19.00</p>
+    </section>
+
+    <section class="venue-section reveal">
+      <h2>Alemdar Kır Düğün Salonu</h2>
+      <p>Arapzade Mah. Refik Atay Cad. / Arkaltı Sok. No:12<br>Orhangazi / Bursa</p>
+    </section>
+
+    <section class="program-section reveal">
+      <h2>Düğün Akışı</h2>
+      <ol class="timeline">
+        <li>Gelin &amp; Damat Dansı</li>
+        <li>Eğlence</li>
+        <li>Takı Töreni</li>
+        <li>Pasta Kesimi</li>
+        <li>Fotoğraf Çekimi</li>
+        <li>After Party</li>
+      </ol>
+    </section>
+
+    <section class="invite-text reveal">
+      <div class="divider-orn"></div>
+      <p>“Mutlu sona değil,<br>sonsuz mutluluğumuzun<br>ilk adımına davetlisiniz.”</p>
+    </section>
+
+    <section class="families reveal">
+      <div class="family">
+        <span class="label">Gelin Ailesi</span>
+        <span class="name">EYLÜL AİLESİ</span>
+      </div>
+      <div class="divider-orn"></div>
+      <div class="family">
+        <span class="label">Damat Ailesi</span>
+        <span class="name">CANDAN AİLESİ</span>
+      </div>
+    </section>
+
+    <section class="venue-section small reveal">
+      <h2>Alemdar Kır Düğün Salonu</h2>
+      <p>Orhangazi / Bursa</p>
+    </section>
+
+    <section class="memory-section reveal">
+      <h2>Anılarımızı Birlikte Biriktirelim</h2>
+      <p>Bu özel günün kareleri bizim için çok kıymetli</p>
+      <button class="photo-btn" id="photoBtn">📷 Anı Fotoğrafı Paylaş</button>
+    </section>
+
+    <section class="gift-section reveal">
+      <h2>Düğün Hediyesi</h2>
+      <p>Maddi hediyenizi aşağıdaki hesaba iletebilirsiniz</p>
+      <p class="iban">Özkan Çağlayan<br>TR72 0006 2000 6820 0006 8933 94</p>
+    </section>
+
+    <section class="rsvp-section reveal">
+      <h2>Katılım Bildirimi</h2>
+      <form id="rsvpForm">
+        <input type="text" id="guestName" placeholder="Ad Soyad" required>
+        <div class="rsvp-buttons">
+          <button type="button" class="rsvp-btn" data-choice="Katılıyorum">Katılıyorum</button>
+          <button type="button" class="rsvp-btn" data-choice="Katılmıyorum">Katılmıyorum</button>
         </div>
+        <button type="submit" class="submit-btn">Gönder</button>
+      </form>
+      <p id="rsvpThanks" hidden>Teşekkürler! Cevabınız alındı 💛</p>
+    </section>
 
-        <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
+    <footer>Elif &amp; Ali — 12.12.2027</footer>
+  </main>
 
-        <p class="quote" data-aos="fade-up" data-aos-duration="1200">
-            "Hayatımızın en özel gününde, mutluluğumuza tanıklık etmenizden ve bu güzel günü bizimle paylaşmanızdan onur duyarız."
-        </p>
+  <button id="musicToggle" aria-label="Müziği aç/kapat">♪</button>
+  <audio id="bgMusic" loop>
+    <source src="muzik.mp3" type="audio/mpeg">
+  </audio>
 
-        <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        <!-- TARİH VE SAAT -->
-        <div class="date-box" data-aos="fade-up" data-aos-duration="1200">
-            <div class="date">07 TEMMUZ 2027</div>
-            <div class="time">ÇARŞAMBA | SAAT: 19:00</div>
-        </div>
+  /* ---- Intro open ---- */
+  var intro = document.getElementById('intro');
+  var openBtn = document.getElementById('openBtn');
+  var bgMusic = document.getElementById('bgMusic');
+  var introVideo = document.getElementById('introVideo');
 
-        <!-- GERİ SAYIM -->
-        <div class="countdown" data-aos="flip-up" data-aos-duration="1200">
-            <div class="count-item">
-                <span id="days">00</span>
-                <label>Gün</label>
-            </div>
-            <div class="count-item">
-                <span id="hours">00</span>
-                <label>Saat</label>
-            </div>
-            <div class="count-item">
-                <span id="minutes">00</span>
-                <label>Dakika</label>
-            </div>
-            <div class="count-item">
-                <span id="seconds">00</span>
-                <label>Saniye</label>
-            </div>
-        </div>
+  openBtn.addEventListener('click', function(){
+    intro.classList.add('hidden');
+    try { introVideo.pause(); } catch(e){}
+    bgMusic.play().then(function(){
+      musicToggle.textContent = '♪';
+      musicPlaying = true;
+    }).catch(function(){ /* autoplay blocked, user can tap the music button */ });
+    setTimeout(function(){
+      document.getElementById('invitation').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth'});
+    }, 250);
+  });
 
-        <div class="divider" data-aos="zoom-in" data-aos-duration="1000"></div>
-
-        <!-- MEKAN VE ADRES -->
-        <div data-aos="fade-up" data-aos-duration="1200">
-            <div class="venue-title">Boran Park Düğün Salonu</div>
-            <p class="venue-address">
-                Sincan / Ankara
-            </p>
-            <a href="https://maps.google.com/?q=Boran+Park+Düğün+Salonu+Sincan+Ankara" target="_blank" class="btn-map">
-                <i class="fa-solid fa-location-dot"></i> Haritada Yol Tarifi Al
-            </a>
-        </div>
-
-    </div>
-
-    <!-- AOS Animation JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        const music = document.getElementById('bg-music');
-        let isPlaying = false;
-
-        function openEnvelope() {
-            const env = document.getElementById('envelope-screen');
-            const mainCard = document.getElementById('main-card');
-
-            // Zarf ekranını gizle
-            env.classList.add('hidden');
-            
-            // Kartı göster
-            mainCard.classList.add('visible');
-
-            // Animasyonları tetikle
-            AOS.init({
-                once: true,
-                duration: 1000
-            });
-            AOS.refresh();
-
-            // Müziği başlat
-            music.play().then(() => {
-                isPlaying = true;
-            }).catch(err => {
-                console.log("Müzik otomatik başlatılamadı:", err);
-            });
+  /* ---- Scroll reveal ---- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
         }
+      });
+    }, {threshold:.2});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  }
 
-        function toggleMusic(e) {
-            e.stopPropagation();
-            const btnIcon = document.querySelector('#music-btn i');
-            if (isPlaying) {
-                music.pause();
-                btnIcon.className = 'fa-solid fa-volume-xmark';
-            } else {
-                music.play();
-                btnIcon.className = 'fa-solid fa-music';
-            }
-            isPlaying = !isPlaying;
-        }
+  /* ---- Countdown ---- */
+  var target = new Date('2027-12-12T19:00:00');
+  function updateCountdown(){
+    var now = new Date();
+    var diff = target - now;
+    var days = Math.max(0, Math.ceil(diff / (1000*60*60*24)));
+    document.getElementById('cdDays').textContent = days;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000*60*60);
 
-        // GERİ SAYIM (07 Temmuz 2027)
-        const weddingDate = new Date("July 7, 2027 19:00:00").getTime();
+  /* ---- Scratch-off heart ---- */
+  var canvas = document.getElementById('scratchCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
 
-        setInterval(function() {
-            const now = new Date().getTime();
-            const diff = weddingDate - now;
+  function paintScratchLayer(){
+    ctx.globalCompositeOperation = 'source-over';
+    var grad = ctx.createRadialGradient(w*.35,h*.3,10,w/2,h/2,w*.75);
+    grad.addColorStop(0, '#E7CD8E');
+    grad.addColorStop(1, '#8a6a28');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(w/2,h/2,w/2,0,Math.PI*2);
+    ctx.fill();
 
-            if (diff > 0) {
-                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
-            }
-        }, 1000);
-    </script>
+    ctx.fillStyle = 'rgba(255,255,255,.9)';
+    ctx.font = '64px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('❤', w/2, h/2 - 6);
+
+    ctx.fillStyle = 'rgba(255,255,255,.85)';
+    ctx.font = 'italic 12px Georgia, serif';
+    ctx.fillText('kazımak için sürükleyin', w/2, h/2 + 46);
+  }
+  paintScratchLayer();
+
+  var scratching = false;
+  var doneCheckCount = 0;
+
+  function erase(x, y){
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 16, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  function getPos(evt){
+    var rect = canvas.getBoundingClientRect();
+    var clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+    var clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+    return {
+      x: (clientX - rect.left) * (canvas.width / rect.width),
+      y: (clientY - rect.top) * (canvas.height / rect.height)
+    };
+  }
+
+  function checkDone(){
+    doneCheckCount++;
+    if(doneCheckCount % 6 !== 0) return;
+    var data = ctx.getImageData(0,0,w,h).data;
+    var transparent = 0, total = 0;
+    for(var i=3;i<data.length;i+=4*8){
+      total++;
+      if(data[i] < 32) transparent++;
+    }
+    if(transparent/total > 0.45){
+      canvas.classList.add('done');
+    }
+  }
+
+  function startScratch(evt){
+    scratching = true;
+    var p = getPos(evt);
+    erase(p.x, p.y);
+  }
+  function moveScratch(evt){
+    if(!scratching) return;
+    evt.preventDefault();
+    var p = getPos(evt);
+    erase(p.x, p.y);
+    checkDone();
+  }
+  function endScratch(){ scratching = false; }
+
+  canvas.addEventListener('mousedown', startScratch);
+  canvas.addEventListener('mousemove', moveScratch);
+  window.addEventListener('mouseup', endScratch);
+  canvas.addEventListener('touchstart', startScratch, {passive:true});
+  canvas.addEventListener('touchmove', moveScratch, {passive:false});
+  canvas.addEventListener('touchend', endScratch);
+
+  /* ---- Music toggle ---- */
+  var musicToggle = document.getElementById('musicToggle');
+  var musicPlaying = false;
+  musicToggle.addEventListener('click', function(){
+    if(musicPlaying){
+      bgMusic.pause();
+      musicToggle.textContent = '♪̸';
+    } else {
+      bgMusic.play().catch(function(){});
+      musicToggle.textContent = '♪';
+    }
+    musicPlaying = !musicPlaying;
+  });
+
+  /* ---- Photo button (placeholder action) ---- */
+  document.getElementById('photoBtn').addEventListener('click', function(){
+    alert('Fotoğraflarınızı paylaşmak için bize ulaşabilirsiniz — bu buton, sizin belirleyeceğiniz bir galeri/albüm bağlantısına yönlendirilecek şekilde ayarlanabilir.');
+  });
+
+  /* ---- RSVP ---- */
+  var choice = null;
+  var rsvpBtns = document.querySelectorAll('.rsvp-btn');
+  rsvpBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      rsvpBtns.forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      choice = btn.dataset.choice;
+    });
+  });
+
+  document.getElementById('rsvpForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('guestName').value.trim();
+    if(!name || !choice){
+      alert('Lütfen adınızı girin ve bir seçenek belirleyin.');
+      return;
+    }
+    document.getElementById('rsvpForm').hidden = true;
+    var thanks = document.getElementById('rsvpThanks');
+    thanks.hidden = false;
+    thanks.textContent = name + ', cevabınız (' + choice + ') alındı. Teşekkürler 💛';
+  });
+})();
+</script>
+
 </body>
 </html>
